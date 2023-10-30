@@ -5,7 +5,7 @@ char_num = 9
 char_face = None
 score = 0
 
-FPS = 300
+FPS = 60
 TILE_SIZE = 64
 WIDTH = 1200
 HEIGHT = TILE_SIZE * 10
