@@ -1,0 +1,25 @@
+import os
+
+CHAR_LIST = os.listdir('../images/NinjaAdventure/Actor/Characters/')
+char_num = 9
+char_face = None
+score = 0
+
+FPS = 300
+TILE_SIZE = 64
+WIDTH = 1200
+HEIGHT = TILE_SIZE * 10
+SPEED = 500
+BORDURE = TILE_SIZE * 5
+TOP_BORDURE = TILE_SIZE * 2
+BOTTOM_BORDURE = TILE_SIZE * 4
+JUMP = -1200
+GRAVITY = 6500
+SPRITE_SIZE = 16
+TOLERANCE_POND = TILE_SIZE / 2
+AMINATION_SPEED = 4
+
+BUTTON_COLOR = (200, 200, 200)
+BUTTON_COLOR_ON_MOUSE_OVER = (100, 100, 100)
+
+level_num = 0

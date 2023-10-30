@@ -1,0 +1,86 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level-0.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
+    "fileStates": {
+        "Assets.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 3
+        },
+        "C:/Users/marcel/TiledProjecs/Assets.tsx": {
+            "scaleInDock": 1
+        },
+        "asset.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 2
+        },
+        "level-0.tmx": {
+            "expandedGroupLayers": [
+                3
+            ],
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 253,
+                "y": 254
+            }
+        },
+        "level-1.tmx": {
+            "scale": 0.5779166666666666,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 479.30785868781544,
+                "y": 241.38428262436918
+            }
+        },
+        "redflag.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        }
+    },
+    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level",
+    "last.externalTilesetPath": "D:/lycee/python/platformer/images/NinjaAdventure/Backgrounds/Animated/Flag",
+    "last.imagePath": "C:/Users/marcel/PycharmProject/platformer/images/NinjaAdventure/Backgrounds/Tilesets",
+    "last.worldFilePath": "C:/Users/marcel/PycharmProject/platformer/level",
+    "lastUsedTilesetExportFilter": "Tous les Fichiers (*)",
+    "loadedWorlds": [
+        "C:/Users/marcel/PycharmProject/platformer/level/level-1.world"
+    ],
+    "map.height": 30,
+    "map.lastUsedExportFilter": "Fichiers CSV (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 60,
+    "openFiles": [
+        "level-0.tmx",
+        "level-1.tmx",
+        "Assets.tsx"
+    ],
+    "project": "level-0.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "Assets.tsx",
+        "level-1.tmx",
+        "level-0.tmx",
+        "redflag.tsx",
+        "asset.tsx"
+    ],
+    "resizeMap.removeObjects": false,
+    "tileset.lastUsedFilter": "Tous les Fichiers (*)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#000000",
+    "tileset.useTransparentColor": true
+}
