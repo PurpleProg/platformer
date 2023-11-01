@@ -34,10 +34,10 @@
         },
         "level-1.tmx": {
             "scale": 0.5779166666666666,
-            "selectedLayer": 4,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 479.30785868781544,
-                "y": 241.38428262436918
+                "x": 477.577505407354,
+                "y": 240.51910598413843
             }
         },
         "redflag.tsx": {
@@ -46,7 +46,7 @@
             "scaleInEditor": 3
         }
     },
-    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level/1",
+    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level/0",
     "last.externalTilesetPath": "D:/lycee/python/platformer/images/NinjaAdventure/Backgrounds/Animated/Flag",
     "last.imagePath": "C:/Users/marcel/PycharmProject/platformer/images/NinjaAdventure/Backgrounds/Tilesets",
     "last.worldFilePath": "C:/Users/marcel/PycharmProject/platformer/level",

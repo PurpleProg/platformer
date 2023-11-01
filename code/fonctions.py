@@ -1,6 +1,7 @@
 from csv import reader
 import pygame
 from settings import *
+from os import listdir
 
 
 def import_csv(path: str):
@@ -36,19 +37,24 @@ def load_character(character: str):
     return loaded_character
 
 
-def level(num: int):
+def level_files_path(num: int):
     """return a list of path for a given level num"""
     # devrait etre evolutif en fonction du contenu du fichier level/ et de l'extension du fichier
-    return [
-        f'../level/{num}._foreground.csv',
-        f'../level/{num}._hidden.csv',
-        f'../level/{num}._grass.csv',
-        f'../level/{num}._misc.csv',
-        f'../level/{num}._toptile.csv',
-        f'../level/{num}._bridges.csv',
-        f'../level/{num}._tiles.csv',
-        f'../level/{num}._background.csv',
-    ]
+    # return [
+    #     f'../level/{num}/_background.csv',
+    #     f'../level/{num}/_tiles.csv',
+    #     f'../level/{num}/_bridges.csv',
+    #     f'../level/{num}/_toptile.csv',
+    #     f'../level/{num}/_misc.csv',
+    #     f'../level/{num}/_grass.csv',
+    #     f'../level/{num}/_hidden.csv',
+    #     f'../level/{num}/_foreground.csv',
+    # ]
+    list_of_files = os.listdir(f"../level/{num}/")
+    for i, file in enumerate(list_of_files):
+        list_of_files[i] = f"../level/{num}/"+file
+
+    return list_of_files
 
 
 def get_spritesheet(name: str, animated: bool):

@@ -16,7 +16,7 @@ class Level:
         assert str(type(game_state_manager)) == "<class 'gamestate.GameStateManager'>", f"expects <class 'gamestate.GameStateManager'>, got {str(type(game_state_manager))} instead"
 
         self.surface = pygame.display.get_surface()
-        self.background = Background()
+        self.background_sky = Background()
         self.spritesheet = get_spritesheet(spritesheet, False)
         self.character = load_character(character)
         self.gravity = gravity
@@ -27,75 +27,60 @@ class Level:
         self.y_shift = 0
 
         # define groups for tiles
-        self.collidibles = DefaultGroup()
-        self.background_group = DefaultGroup()
-        self.top_tile = DefaultGroup()
-        self.misc_group = DefaultGroup()
         self.player_group = DefaultGroup()
-        self.foreground = DefaultGroup()
-        self.visibles = DefaultGroup()
-        self.grass = DefaultGroup()
-        self.bridges = DefaultGroup()
-        self.hidden = DefaultGroup()
+        self.visibles = DefaultGroup()      # group visibles is drawn
+        self.all = DefaultGroup()           # group all is used for updates
 
         # loading tiles
-        for data in level(load_level_num):
-            level_csv = import_csv(data)
+        #
+        # loading them in the right order is tricky, especially for the player
+        # because he appends in the misc file but need to be added to visible at the same time as hidden
+        for path in level_files_path(load_level_num):
+            level_csv = import_csv(path)
 
+            # define the group for each file
+            group_name = path[path.rfind('_')+1:(path.rfind('.'))]  # extract just a name from the path
+            exec(f"self.{group_name} = DefaultGroup()")
+
+            # loading each tile into it group
             for row_index, row in enumerate(level_csv):
-                for col_index, case in enumerate(row):
+                for col_index, id in enumerate(row):
                     pos = (col_index*TILE_SIZE, row_index*TILE_SIZE)
-                    if case != '-1':
-                        tile = Tile(pos, case, self.spritesheet)
-                        if data == f'../level/{load_level_num}._tiles.csv':
-                            self.collidibles.add(tile)
-                        elif data == f'../level/{load_level_num}._misc.csv':
-                            if case == '50':
+                    if id != '-1':          # id -1 mean there is nothing at this place
+                        tile = Tile(pos, id, self.spritesheet)
+                        if group_name == 'misc':
+                            if id == '50':      # 50 is the id of the player
                                 self.player = Player(pos, self.character)
                                 self.player_group.add(self.player)
                             else:
-                                self.misc_group.add(tile)
-                        elif data == f'../level/{load_level_num}._background.csv':
-                            self.background_group.add(tile)
-                        elif data == f'../level/{load_level_num}._toptile.csv':
-                            self.top_tile.add(tile)
-                        elif data == f'../level/{load_level_num}._foreground.csv':
-                            self.foreground.add(tile)
-                        elif data == f'../level/{load_level_num}._grass.csv':
-                            self.grass.add(tile)
-                        elif data == f'../level/{load_level_num}._bridges.csv':
-                            self.bridges.add(tile)
-                        elif data == f'../level/{load_level_num}._hidden.csv':
-                            self.hidden.add(tile)
+                                exec(f"self.{group_name}.add(tile)")
+                                self.all.add(tile)
+                        else:
+                            exec(f"self.{group_name}.add(tile)")
+                            self.all.add(tile)
+            if group_name != 'hidden':
+                exec(f"self.visibles.add(self.{group_name})")
+            else:
+                # groupe_name == hidden
+                # time to add player to visibles
+                self.visibles.add(self.player_group)
 
         self.player.x_shift_speed = self.player.speed_x
-
-        # setting up visibles group (only it is draw)
-        self.visibles.add(self.background_group)
-        self.visibles.add(self.collidibles)
-        self.visibles.add(self.bridges)
-        self.visibles.add(self.top_tile)
-        self.visibles.add(self.misc_group)
-        self.visibles.add(self.grass)
-        self.visibles.add(self.player_group)
-        self.visibles.add(self.foreground)
 
     def run(self, dt: float):
 
         # updates
-        self.background.update()
+        self.background_sky.update()
         self.update()   # change x_shift et y_shift en fonction de la position de player
         self.player.update(dt)    # change la direction + anime
 
         # update x
-        self.visibles.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift
-        self.hidden.update_x(self.x_shift, self.player.x_shift_speed, dt)       # applique x_chift
+        self.all.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift
         self.player.move_x(dt)
         self.collide_x()                # replace sur X si collision
 
         # update y
-        self.visibles.update_y(self.y_shift, dt)        # applique y_chift
-        self.hidden.update_y(self.y_shift, dt)          # applique y_chift
+        self.all.update_y(self.y_shift, dt)          # applique y_chift
         self.player.move_y(self.gravity, dt, self.y_shift)    # applique la gravité et le saut
         self.collide_y()                # replace sur Y si collision
 
@@ -134,6 +119,7 @@ class Level:
         """fin du jeux si on gagne"""
         # reset groups
         self.hidden.empty()
+        self.all.empty()
         self.visibles.empty()
 
         settings.level_num += 1
@@ -143,6 +129,7 @@ class Level:
     def game_over(self):
         """fin du jeux si on pert"""
         # reset groups
+        self.all.empty()
         self.hidden.empty()
         self.visibles.empty()
 
@@ -152,11 +139,11 @@ class Level:
     def collide_y(self):
         """gere toutes les collisions sur l'axe Y (pour les tuiles et les ponds)"""
         # collide with tiles
-        for sprite in self.collidibles.sprites():
+        for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
                 if self.player.vecteur.y < 0:  # using vecteur instead of direction because gravity mess up direction
-                    self.player.rect.top = sprite.rect.bottom + 33000
-                    self.player.pos.y = sprite.rect.bottom + 33090
+                    self.player.rect.top = sprite.rect.bottom
+                    self.player.pos.y = sprite.rect.bottom
                     self.player.direction.y = 1.0
                 elif self.player.vecteur.y > 0:
                     self.player.rect.bottom = sprite.rect.top
@@ -181,7 +168,7 @@ class Level:
 
     def collide_x(self):
         """gere toutes les collisions sur l'axe X"""
-        for sprite in self.collidibles.sprites():
+        for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
                 if self.player.direction.x < 0:
                     self.player.pos.x = sprite.rect.right
@@ -193,8 +180,8 @@ class Level:
     def collide_misc(self):
         """gere les collisions avec les items"""
         # get the points and increment score
-        if pygame.sprite.spritecollide(self.player, self.misc_group, False):
-            collided = pygame.sprite.spritecollide(self.player, self.misc_group, False, pygame.sprite.collide_mask)
+        if pygame.sprite.spritecollide(self.player, self.misc, False):
+            collided = pygame.sprite.spritecollide(self.player, self.misc, False, pygame.sprite.collide_mask)
             if collided:
                 if collided[0].id == 261:       # 261 is the id of the big golden ball (from the tiled map)
                     self.player.score += 5

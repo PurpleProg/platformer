@@ -152,7 +152,7 @@ class Mainmenu:
 class Runlevel:
     def __init__(self, current_level_num: int, game_state_manager):
         assert str(type(game_state_manager)) == "<class 'gamestate.GameStateManager'>", f"expects <class 'gamestate.GameStateManager'>, got {str(type(game_state_manager))} instead"
-        self.level = Level(f'level-{current_level_num}', 'Assets', settings.CHAR_LIST[settings.char_num], GRAVITY, game_state_manager)
+        self.level = Level(current_level_num, 'Assets', settings.CHAR_LIST[settings.char_num], GRAVITY, game_state_manager)
         self.screen = pygame.display.get_surface()
 
         self.game_state_manager = game_state_manager

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="32" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#9f9f9f" nextlayerid="15" nextobjectid="3">
  <editorsettings>
-  <export target="level-0..csv" format="csv"/>
+  <export target="0/.csv" format="csv"/>
  </editorsettings>
  <tileset firstgid="1" source="Assets.tsx"/>
- <layer id="9" name="background" width="80" height="32" visible="0" locked="1">
+ <layer id="9" name="a_background" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -44,7 +44,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="4" name="tiles" width="80" height="32">
+ <layer id="4" name="b_tiles" width="80" height="32">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 154,126,101,76,54,0,0,0,0,0,0,0,0,0,0,0,
@@ -228,7 +228,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="12" name="bridges" width="80" height="32" visible="0" locked="1">
+ <layer id="12" name="c_bridges" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -358,7 +358,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="10" name="toptile" width="80" height="32" visible="0" locked="1">
+ <layer id="10" name="d_toptile" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -434,7 +434,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="8" name="misc" width="80" height="32" visible="0" locked="1">
+ <layer id="8" name="e_misc" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -528,7 +528,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="2" name="grass" width="80" height="32" visible="0" locked="1">
+ <layer id="2" name="f_grass" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 532,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -694,7 +694,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="13" name="hidden" width="80" height="32" locked="1">
+ <layer id="13" name="g_hidden" width="80" height="32" visible="0" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -752,7 +752,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="11" name="foreground" width="80" height="32" visible="0" locked="1">
+ <layer id="11" name="h_foreground" width="80" height="32" locked="1">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 179,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
