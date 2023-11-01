@@ -67,12 +67,10 @@ class Level:
                             self.bridges.add(tile)
                         elif data == f'../level/{load_level_num}._hidden.csv':
                             self.hidden.add(tile)
-                        # else:
-                        #     self.visibles.add(tile)
 
         self.player.x_shift_speed = self.player.speed_x
 
-        # setting up visibles group (only him is draw)
+        # setting up visibles group (only it is draw)
         self.visibles.add(self.background_group)
         self.visibles.add(self.collidibles)
         self.visibles.add(self.bridges)
@@ -91,24 +89,27 @@ class Level:
 
         # update x
         self.visibles.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift
-        self.hidden.update_x(self.x_shift, self.player.x_shift_speed, dt)
+        self.hidden.update_x(self.x_shift, self.player.x_shift_speed, dt)       # applique x_chift
         self.player.move_x(dt)
-        self.collide_x()                # replace sur Y si besoin
+        self.collide_x()                # replace sur X si collision
 
         # update y
-        self.visibles.update_y(self.y_shift, dt)
-        self.hidden.update_y(self.y_shift, dt)
+        self.visibles.update_y(self.y_shift, dt)        # applique y_chift
+        self.hidden.update_y(self.y_shift, dt)          # applique y_chift
         self.player.move_y(self.gravity, dt, self.y_shift)    # applique la gravité et le saut
-        self.collide_y()                # replace sur Y si besoin
+        self.collide_y()                # replace sur Y si collision
 
         # draw groups
         self.visibles.draw(self.surface)
         self.collide_hidden()               # draw hidden group only if there is no collision
 
-        # items
+        # items and end flag
         self.collide_misc()
 
     def update(self):
+        """Si le joueur s'approche du bord, immobilise le et bouge les tuiles dans le sens inverse
+        les tuiles ne sont pas deplacees ici,
+        seulement une variable shift est modifiee puis sera utilisee par la fonction update des tuiles"""
         if self.player.rect.right > WIDTH-BORDURE and self.player.direction.x > 0:
             self.x_shift = -1
             self.player.speed_x = 0
@@ -130,6 +131,7 @@ class Level:
             self.player.speed_y = SPEED
 
     def game_finish(self):
+        """fin du jeux si on gagne"""
         # reset groups
         self.hidden.empty()
         self.visibles.empty()
@@ -139,6 +141,7 @@ class Level:
         self.game_state_manager.set_state('mainmenu')
 
     def game_over(self):
+        """fin du jeux si on pert"""
         # reset groups
         self.hidden.empty()
         self.visibles.empty()
@@ -147,6 +150,8 @@ class Level:
         self.game_state_manager.set_state('mainmenu')
 
     def collide_y(self):
+        """gere toutes les collisions sur l'axe Y (pour les tuiles et les ponds)"""
+        # collide with tiles
         for sprite in self.collidibles.sprites():
             if sprite.rect.colliderect(self.player.rect):
                 if self.player.vecteur.y < 0:  # using vecteur instead of direction because gravity mess up direction
@@ -175,6 +180,7 @@ class Level:
             self.game_over()
 
     def collide_x(self):
+        """gere toutes les collisions sur l'axe X"""
         for sprite in self.collidibles.sprites():
             if sprite.rect.colliderect(self.player.rect):
                 if self.player.direction.x < 0:
@@ -185,19 +191,21 @@ class Level:
                     self.player.rect.right = sprite.rect.left
 
     def collide_misc(self):
+        """gere les collisions avec les items"""
         # get the points and increment score
         if pygame.sprite.spritecollide(self.player, self.misc_group, False):
             collided = pygame.sprite.spritecollide(self.player, self.misc_group, False, pygame.sprite.collide_mask)
             if collided:
-                if collided[0].id == 261:
+                if collided[0].id == 261:       # 261 is the id of the big golden ball (from the tiled map)
                     self.player.score += 5
                     collided[0].kill()
-                elif collided[0].id == 262:
+                elif collided[0].id == 262:     # 262 is the id of the small golden ball (from the tiled map)
                     self.player.score += 1
                     collided[0].kill()
-                elif collided[0].id == 25:
+                elif collided[0].id == 25:      # 25 is the id of the end flag (from the tiled map)
                     self.game_finish()
 
     def collide_hidden(self):
+        """draw the hidden group only if there is no collision with the player"""
         if not pygame.sprite.spritecollide(self.player, self.hidden, False):
             self.hidden.draw(self.surface)

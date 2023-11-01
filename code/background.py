@@ -2,8 +2,11 @@ import pygame
 
 
 class Background:
+    """images displayed on the background"""
     def __init__(self):
         self.game_display = pygame.display.get_surface()
+
+        # creating one surface from multiples background images
         self.image1 = pygame.image.load('../images/Tiles/Assets/Background_2.png').convert_alpha()
         self.image1 = pygame.transform.scale(self.image1, pygame.display.get_desktop_sizes()[0])
         self.rect1 = self.image1.get_rect()
@@ -18,4 +21,5 @@ class Background:
         self.rect = self.surf.get_rect()
 
     def update(self):
+        """blit the background on the display"""
         self.game_display.blit(self.surf, self.rect)

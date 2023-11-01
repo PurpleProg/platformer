@@ -24,6 +24,7 @@ class Button:
         self.text = text
 
     def update(self, color):
+        """sert a changer la couleur du bouton"""
         assert len(color) == 3, f'expects 3, got {len(color)}'
         self.image.fill(color)
         self.image.blit(self.text, (
@@ -42,6 +43,7 @@ class ButtonsGroup:
         self.buttons.append(button)
 
     def update(self, color):
+        """update the color of every button on the group"""
         assert len(color) == 3, f'expects 3, got {len(color)}'
         for button in self.buttons:
             button.update(color)
@@ -70,7 +72,7 @@ class Mainmenu:
             '../images/NinjaAdventure/Actor/Characters/' + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
         settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
 
-        # buttons
+        # creating buttons
         self.buttons = ButtonsGroup()
         self.buttons.add(Button((250, 500),   (100, 100, 100),
                                 render_text('play', 50, (0, 0, 0)),
@@ -114,10 +116,12 @@ class Mainmenu:
             self.screen.blit(render_text(f'score : {int(settings.score)}', 80, (255, 255, 255)), (450, 20))
 
     def play(self):
+        """exit the menu and start the game"""
         self.game_state_manager.states['level'] = Runlevel(settings.level_num, self.game_state_manager)
         self.game_state_manager.set_state('level')
 
     def replay(self):
+        """play the level current level instead of the next one"""
         if settings.level_num > 0:
             last_level_num = settings.level_num - 1
             self.game_state_manager.states['level'] = Runlevel(settings.level_num - 1, self.game_state_manager)
@@ -125,7 +129,7 @@ class Mainmenu:
             settings.level_num = last_level_num
 
     def next_char(self):
-
+        """changing character"""
         if settings.char_num == len(settings.CHAR_LIST) - 1:
             pass
         else:
@@ -135,7 +139,7 @@ class Mainmenu:
         settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
 
     def prev_char(self):
-
+        """changing character"""
         if settings.char_num == 0:
             pass
         else:
@@ -171,9 +175,11 @@ class Runlevel:
         self.buttons.add(self.quit_button)
 
     def resume(self):
+        """exit pause"""
         self.level.playing = True
 
     def quit(self):
+        """quit game and go to main menu"""
         self.game_state_manager.set_state('mainmenu')
 
     def run(self, dt: float):

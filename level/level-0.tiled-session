@@ -28,8 +28,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 253,
-                "y": 254
+                "x": 252,
+                "y": 253
             }
         },
         "level-1.tmx": {
@@ -46,7 +46,7 @@
             "scaleInEditor": 3
         }
     },
-    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level",
+    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level/1",
     "last.externalTilesetPath": "D:/lycee/python/platformer/images/NinjaAdventure/Backgrounds/Animated/Flag",
     "last.imagePath": "C:/Users/marcel/PycharmProject/platformer/images/NinjaAdventure/Backgrounds/Tilesets",
     "last.worldFilePath": "C:/Users/marcel/PycharmProject/platformer/level",

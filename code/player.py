@@ -27,18 +27,24 @@ class Player(pygame.sprite.Sprite):
         self.score = 0
 
     def update(self, dt: float):
+        """change la direction du joueur et l'anime"""
 
-        # updating the direction
+        # updating the y direction
         if self.vecteur.y > 0:
             self.direction.y = 1
         elif self.vecteur.y < 0:
             self.direction.y = 1
 
         self.animate(dt)
+
+        # updating the x direction
         self.get_pressed()
 
     def animate(self, dt: float):
-
+        """change the sprite of the player based on his current state"""
+        # la gestion de l'etat du personnage (si il saute par exemple) est pas tres bien faite.
+        # il faudrait le refaire en utilisant un dictionnaire d'animations que la fonction jump
+        # et les deplacement sur x (dans la fonction get pressed de la class player) puisse modifier
         if self.direction.x > 0:
             x = 3
             y = int(self.counter)
@@ -58,6 +64,8 @@ class Player(pygame.sprite.Sprite):
         self.get_sprite(self.character, (x, y))
 
     def get_sprite(self, sprite_sheet_image, pos: tuple):
+        """called by the animate fonction.
+        load the new player sprite from a spritesheet and at the given position"""
         # assertions
         assert str(type(sprite_sheet_image)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(sprite_sheet_image))} instead"
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
@@ -71,6 +79,8 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
     def get_pressed(self):
+        """change the x direction based on key press"""
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
@@ -79,6 +89,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+        # cheat
         if keys[pygame.K_r]:
             x = 150
             y = 150
@@ -86,14 +97,17 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = 0
 
     def gravity(self, gravity: int, dt: float):
+        """apply the gravity"""
         self.vecteur.y += 0.5 * gravity * dt * dt
         self.direction.y = 1.0
 
     def move_x(self, dt: float):
+        """move the player on x"""
         self.pos.x += self.direction.x * self.speed_x * dt
         self.rect.x = round(self.pos.x)
 
     def move_y(self, gravity: int, dt: float, y_shift: int):
+        """move the player on y, call jump on key press and call gravity"""
         keys = pygame.key.get_pressed()
 
         # saut
@@ -106,11 +120,12 @@ class Player(pygame.sprite.Sprite):
         # replace to avoid super-jump du to tiles shift
         self.pos.y += y_shift * SPEED * dt
 
-        # placement
+        # moving
         self.pos.y += self.vecteur.y
         self.rect.y = round(self.pos.y)
 
     def jump(self, dt: float):
+        """just jump"""
         # self.vecteur.y = JUMP * (1/FPS)
         self.vecteur.y = JUMP * dt
 
