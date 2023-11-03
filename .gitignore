@@ -1,10 +1,10 @@
-venv/*
+venv/
 .idea/*
 *.zip
+test.txt
 /code/__pycahe__/*
 /images/BlueWizard
 /images/Mossy\ Tileset
-.
 /images/SlimeGreen/*
 /images/SlimeOrange
 /images/Sunny-land-forest-files
