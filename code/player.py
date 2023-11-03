@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
             y = 0
         if round(self.vecteur.y) != 0:          # rounded vecteur is == 0 at the top of the jump
             y = 5
-        self.counter += dt * AMINATION_SPEED
+        self.counter += dt * AMINATION_SPEED * SPEED
 
         if int(self.counter) > 3:
             self.counter = 0
@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_sprite(self, sprite_sheet_image, pos: tuple):
         """called by the animate fonction.
-        load the new player sprite from a spritesheet and at the given position"""
+        load the new player sprite from a spritesheet at the given position"""
         # assertions
         assert str(type(sprite_sheet_image)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(sprite_sheet_image))} instead"
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
@@ -91,10 +91,15 @@ class Player(pygame.sprite.Sprite):
 
         # cheat
         if keys[pygame.K_r]:
-            x = 150
-            y = 150
-            self.rect.center = (x, y)
-            self.direction.y = 0
+            self.respawn(150, 150)
+
+    def respawn(self, x, y):
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.pos.x = x
+        self.pos.y = y
+        self.vecteur.y = 0
+        self.direction.y = 0
 
     def gravity(self, gravity: int, dt: float):
         """apply the gravity"""

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level-0.tmx",
+    "activeFile": "level-1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -25,19 +25,19 @@
             "expandedGroupLayers": [
                 3
             ],
-            "scale": 1,
-            "selectedLayer": 1,
+            "scale": 5.5,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 252,
-                "y": 253
+                "x": 1057.4545454545455,
+                "y": 355.8181818181818
             }
         },
         "level-1.tmx": {
-            "scale": 0.5779166666666666,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 477.577505407354,
-                "y": 240.51910598413843
+                "x": 74.66666666666666,
+                "y": 113.66666666666666
             }
         },
         "redflag.tsx": {
@@ -46,13 +46,14 @@
             "scaleInEditor": 3
         }
     },
-    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level/0",
+    "last.exportedFilePath": "C:/Users/marcel/PycharmProject/platformer/level/1",
     "last.externalTilesetPath": "D:/lycee/python/platformer/images/NinjaAdventure/Backgrounds/Animated/Flag",
     "last.imagePath": "C:/Users/marcel/PycharmProject/platformer/images/NinjaAdventure/Backgrounds/Tilesets",
     "last.worldFilePath": "C:/Users/marcel/PycharmProject/platformer/level",
     "lastUsedTilesetExportFilter": "Tous les Fichiers (*)",
     "loadedWorlds": [
-        "C:/Users/marcel/PycharmProject/platformer/level/level-1.world"
+        "C:/Users/marcel/PycharmProject/platformer/level/level-1.world",
+        "C:/Users/marcel/PycharmProject/platformer/level/level-2.world"
     ],
     "map.height": 30,
     "map.lastUsedExportFilter": "Fichiers CSV (*.csv)",
@@ -62,15 +63,14 @@
     "map.width": 60,
     "openFiles": [
         "level-0.tmx",
-        "level-1.tmx",
-        "Assets.tsx"
+        "level-1.tmx"
     ],
     "project": "level-0.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Assets.tsx",
-        "level-1.tmx",
         "level-0.tmx",
+        "level-1.tmx",
+        "Assets.tsx",
         "redflag.tsx",
         "asset.tsx"
     ],
