@@ -1,3 +1,5 @@
+import sys
+
 import pygame.display
 from pygame.locals import *
 from settings import *
@@ -92,6 +94,7 @@ class Mainmenu:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT:
                     self.next_char()
@@ -186,7 +189,8 @@ class Runlevel:
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == QUIT:
-                quit()
+                pygame.quit()
+                sys.exit()
             if event.type == KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.level.player.jump(dt)
