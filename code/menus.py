@@ -91,7 +91,7 @@ class Mainmenu:
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == QUIT:
-                quit()
+                pygame.quit()
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT:
                     self.next_char()
