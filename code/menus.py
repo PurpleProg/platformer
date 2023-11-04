@@ -5,16 +5,15 @@ from settings import *
 import settings
 from fonctions import render_text, get_full_path
 from level import Level
+from gamestate import GameStateManager
 
 
 class Button:
-    def __init__(self, pos: tuple, color: tuple, text, commande):
+    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: classmethod):
 
         # assertions
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
         assert len(color) == 3, f'expects 3, got {len(color)}'
-        assert str(type(text)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(text))} instead"
-        assert str(type(commande)) == "<class 'method'>", f"expects <class 'method'>, got {str(type(text))} instead"
 
         self.commande = commande
         self.image = pygame.Surface((200, 50))
@@ -39,8 +38,7 @@ class ButtonsGroup:
     def __init__(self):
         self.buttons = []
 
-    def add(self, button):
-        assert str(type(button)) == "<class 'menus.Button'>", f"expects <class 'menus.Button'>, got {str(type(button))}"
+    def add(self, button: Button):
         self.buttons.append(button)
 
     def update(self, color):
@@ -49,15 +47,13 @@ class ButtonsGroup:
         for button in self.buttons:
             button.update(color)
 
-    def draw(self, surf):
-        assert str(type(surf)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(surf))} instead"
+    def draw(self, surf: pygame.Surface):
         for button in self.buttons:
             surf.blit(button.image, button.rect)
 
 
 class Mainmenu:
-    def __init__(self, game_state_manager):
-        assert str(type(game_state_manager)) == "<class 'gamestate.GameStateManager'>", f"expects <class 'gamestate.GameStateManager'>, got {str(type(game_state_manager))} instead"
+    def __init__(self, game_state_manager: GameStateManager):
 
         # configure the windows
         self.screen = pygame.display.get_surface()
@@ -152,8 +148,7 @@ class Mainmenu:
 
 
 class Runlevel:
-    def __init__(self, current_level_num: int, game_state_manager):
-        assert str(type(game_state_manager)) == "<class 'gamestate.GameStateManager'>", f"expects <class 'gamestate.GameStateManager'>, got {str(type(game_state_manager))} instead"
+    def __init__(self, current_level_num: int, game_state_manager: GameStateManager):
         self.level = Level(current_level_num, 'Assets', settings.CHAR_LIST[settings.char_num], GRAVITY, game_state_manager)
         self.screen = pygame.display.get_surface()
 

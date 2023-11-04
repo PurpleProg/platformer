@@ -63,11 +63,10 @@ class Player(pygame.sprite.Sprite):
 
         self.get_sprite(self.character, (x, y))
 
-    def get_sprite(self, sprite_sheet_image, pos: tuple):
+    def get_sprite(self, sprite_sheet_image: pygame.Surface, pos: tuple):
         """called by the animate fonction.
         load the new player sprite from a spritesheet at the given position"""
         # assertions
-        assert str(type(sprite_sheet_image)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(sprite_sheet_image))} instead"
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
 
         self.image = pygame.Surface((SPRITE_SIZE, SPRITE_SIZE))

@@ -2,18 +2,17 @@ import pygame.display
 
 import settings
 from background import Background
+import gamestate
 from fonctions import *
 from player import Player
 from tile import *
 
 
 class Level:
-    def __init__(self, load_level_num: int, spritesheet, character: str, gravity: int, game_state_manager):
+    def __init__(self, load_level_num: int, spritesheet: str, character: str, gravity: int, game_state_manager: gamestate.GameStateManager):
 
         # assertions
-        assert str(type(spritesheet)) == "<class 'str'>", f"expects <class 'str'>, got {str(type(spritesheet))} instead"
         assert character in CHAR_LIST, f"{character} not in CHAR_LIST"
-        assert str(type(game_state_manager)) == "<class 'gamestate.GameStateManager'>", f"expects <class 'gamestate.GameStateManager'>, got {str(type(game_state_manager))} instead"
 
         self.surface = pygame.display.get_surface()
         self.background_sky = Background()

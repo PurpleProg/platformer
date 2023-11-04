@@ -5,12 +5,11 @@ from settings import *
 
 class Tile(pygame.sprite.Sprite):
     """every object of the map is a tile"""
-    def __init__(self, pos: tuple, tile_id: str, spritesheet):
+    def __init__(self, pos: tuple, tile_id: str, spritesheet: pygame.Surface):
         super().__init__()
 
         # assertions
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
-        assert str(type(spritesheet)) == "<class 'pygame.surface.Surface'>", f"expects <class 'pygame.surface.Surface'>, got {str(type(spritesheet))} instead"
 
         self.id = int(tile_id)    # typecast from str to int
         load_pos = get_pos_from_id(self.id)
