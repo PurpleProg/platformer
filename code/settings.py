@@ -1,4 +1,5 @@
 import os
+from fonctions import get_full_path
 
 # variables globales
 char_num = 9            # par default
@@ -7,7 +8,7 @@ score = 0
 level_num = 0
 
 # constantes
-CHAR_LIST = os.listdir('../images/NinjaAdventure/Actor/Characters/')
+CHAR_LIST = os.listdir(get_full_path('images/NinjaAdventure/Actor/Characters/'))
 FPS = 60
 TILE_SIZE = 64
 WIDTH = 1200

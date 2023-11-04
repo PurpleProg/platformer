@@ -2,4 +2,4 @@ output/*
 venv/*
 .idea/*
 *.zip
-/code/__pycahe__/*
+code/__pycache__/*

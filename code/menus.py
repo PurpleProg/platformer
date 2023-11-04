@@ -1,10 +1,9 @@
 import sys
-
 import pygame.display
 from pygame.locals import *
 from settings import *
 import settings
-from fonctions import render_text
+from fonctions import render_text, get_full_path
 from level import Level
 
 
@@ -71,7 +70,7 @@ class Mainmenu:
         self.game_state_manager = game_state_manager
 
         settings.char_face = pygame.image.load(
-            '../images/NinjaAdventure/Actor/Characters/' + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '\Faceset.png').convert()
         settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
 
         # creating buttons
@@ -138,7 +137,7 @@ class Mainmenu:
         else:
             settings.char_num += 1
         settings.char_face = pygame.image.load(
-            '../images/NinjaAdventure/Actor/Characters/' + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
         settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
 
     def prev_char(self):
@@ -148,7 +147,7 @@ class Mainmenu:
         else:
             settings.char_num -= 1
         settings.char_face = pygame.image.load(
-            '../images/NinjaAdventure/Actor/Characters/' + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
         settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
 
 
