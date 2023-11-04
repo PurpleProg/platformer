@@ -25,10 +25,11 @@ def get_full_path(relative_path: str):
     """get th right path for pyinstaller to work properly"""
     relative_path = os.path.normpath(relative_path)
     if '.' not in relative_path:
-        # if there is no point in the path it's just a folder so I add \, else it's a file.
+        # if there is no point in the path it's just a folder, so I add \. Else it's a file.
         relative_path += '\\'
     if hasattr(sys, '_MEIPASS'):
         # if sys has a _MEIPASS attribute, the whole project is loaded from a single compiled executable
+        # _MEIPASS is the temp path where files are extracted
         abs_path = sys._MEIPASS
     else:
         abs_path = os.path.abspath('..')
