@@ -140,13 +140,16 @@ class Level:
         # collide with tiles
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
+                # top
                 if self.player.vecteur.y < 0:  # using vecteur instead of direction because gravity mess up direction
                     self.player.rect.top = sprite.rect.bottom
                     self.player.pos.y = sprite.rect.bottom
                     self.player.direction.y = 1.0
+                # bottom
                 elif self.player.vecteur.y > 0:
                     self.player.rect.bottom = sprite.rect.top
                     self.player.pos.y = sprite.rect.top - TILE_SIZE
+                    self.player.anim_is_jumping = False
                     self.player.direction.y = 0
                 self.player.vecteur.y = 0
 
@@ -157,6 +160,7 @@ class Level:
                     if (self.player.rect.bottom - sprite.rect.top) < TOLERANCE_POND:
                         self.player.rect.bottom = sprite.rect.top
                         self.player.pos.y = sprite.rect.top - TILE_SIZE
+                        self.player.anim_is_jumping = False
                         self.player.direction.y = 0
                         self.player.vecteur.y = 0
 
