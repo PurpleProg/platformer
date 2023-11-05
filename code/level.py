@@ -122,7 +122,6 @@ class Level:
         self.visibles.empty()
 
         settings.level_num += 1
-        settings.score = self.player.score
         self.game_state_manager.set_state('mainmenu')
 
     def game_over(self):
@@ -132,7 +131,6 @@ class Level:
         self.hidden.empty()
         self.visibles.empty()
 
-        settings.score = self.player.score
         self.game_state_manager.set_state('mainmenu')
 
     def collide_y(self):

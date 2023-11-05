@@ -5,8 +5,6 @@ import pygame
 from fonctions import get_full_path
 
 # variables globales
-char_num = 9            # par default
-score = 0
 level_num = 0
 
 # constantes
