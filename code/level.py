@@ -170,9 +170,11 @@ class Level:
         """gere toutes les collisions sur l'axe X"""
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
+                # left
                 if self.player.direction.x < 0:
                     self.player.pos.x = sprite.rect.right
                     self.player.rect.left = sprite.rect.right
+                # right
                 elif self.player.direction.x > 0:
                     self.player.pos.x = sprite.rect.left - TILE_SIZE
                     self.player.rect.right = sprite.rect.left
