@@ -67,9 +67,9 @@ class Mainmenu:
 
         self.game_state_manager = game_state_manager
 
-        settings.char_face = pygame.image.load(
+        self.char_face = pygame.image.load(
             get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '\Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
         # creating buttons
         self.buttons = ButtonsGroup()
@@ -110,7 +110,7 @@ class Mainmenu:
             self.screen.fill((0, 0, 0))
 
             self.buttons.draw(self.screen)
-            self.screen.blit(settings.char_face, (450, 100))
+            self.screen.blit(self.char_face, (450, 100))
             self.screen.blit(render_text(f'level {settings.level_num+1}', 100, (255, 255, 255)), (450, 400))
             self.screen.blit(render_text(f'{settings.CHAR_LIST[settings.char_num]}', 80, (255, 255, 255)), (450, 330))
             self.screen.blit(render_text(f'score : {int(settings.score)}', 80, (255, 255, 255)), (450, 20))
@@ -134,9 +134,9 @@ class Mainmenu:
             pass
         else:
             settings.char_num += 1
-        settings.char_face = pygame.image.load(
+        self.char_face = pygame.image.load(
             get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
     def prev_char(self):
         """changing character"""
@@ -144,9 +144,9 @@ class Mainmenu:
             pass
         else:
             settings.char_num -= 1
-        settings.char_face = pygame.image.load(
+        self.char_face = pygame.image.load(
             get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
 
 class Runlevel:
