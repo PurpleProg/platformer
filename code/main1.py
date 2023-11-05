@@ -20,7 +20,7 @@ class Game:
 
         # defines game states
         self.game_state_manager = GameStateManager()
-        self.level_num = settings.level_num
+        self.level_num = 0
         self.main_menu = Mainmenu(self.game_state_manager)
         self.game_state_manager.states['mainmenu'] = self.main_menu
         self.game_state_manager.states['level'] = Runlevel(self.level_num, self.main_menu.char_num, self.game_state_manager)

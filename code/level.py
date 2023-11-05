@@ -1,6 +1,4 @@
 import pygame.display
-
-import settings
 from background import Background
 import gamestate
 from fonctions import *
@@ -9,7 +7,7 @@ from tile import *
 
 
 class Level:
-    def __init__(self, load_level_num: int, spritesheet: str, character_name: str, gravity: int, game_state_manager: gamestate.GameStateManager):
+    def __init__(self, level_num: int, spritesheet: str, character_name: str, gravity: int, game_state_manager: gamestate.GameStateManager):
 
         # assertions
         assert character_name in CHAR_LIST, f"{character_name} not in CHAR_LIST"
@@ -22,6 +20,7 @@ class Level:
 
         self.game_state_manager = game_state_manager
         self.playing = True
+        self.level_num = level_num
         self.x_shift = 0
         self.y_shift = 0
 
@@ -34,7 +33,7 @@ class Level:
         #
         # loading them in the right order is tricky, especially for the player
         # because he appends in the misc file but need to be added to visible at the same time as hidden
-        for path in level_files_path(load_level_num):
+        for path in level_files_path(level_num):
             level_csv = import_csv(path)
 
             # define the group for each file
@@ -121,7 +120,7 @@ class Level:
         self.all.empty()
         self.visibles.empty()
 
-        settings.level_num += 1
+        self.level_num += 1
         self.game_state_manager.set_state('mainmenu')
 
     def game_over(self):

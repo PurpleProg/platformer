@@ -1,13 +1,7 @@
 import os
-
 import pygame
-
 from fonctions import get_full_path
 
-# variables globales
-level_num = 0
-
-# constantes
 CHAR_LIST = os.listdir(get_full_path('images/NinjaAdventure/Actor/Characters/'))
 FPS = 60
 TILE_SIZE = 64
