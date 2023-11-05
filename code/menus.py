@@ -1,4 +1,6 @@
 import sys
+import typing
+
 import pygame.display
 from pygame.locals import *
 from settings import *
@@ -9,7 +11,7 @@ from gamestate import GameStateManager
 
 
 class Button:
-    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: classmethod):
+    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: typing.Callable):
 
         # assertions
         assert len(pos) == 2, f'expects 2, got {len(pos)}'

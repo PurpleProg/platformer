@@ -1,9 +1,12 @@
 import os
+
+import pygame
+
 from fonctions import get_full_path
 
 # variables globales
 char_num = 9            # par default
-char_face = None
+char_face = pygame.Surface((0, 0))
 score = 0
 level_num = 0
 

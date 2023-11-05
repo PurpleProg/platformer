@@ -3,7 +3,7 @@ from settings import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple, character: str):
+    def __init__(self, pos: tuple, character: pygame.Surface):
         super().__init__()
 
         # assertions

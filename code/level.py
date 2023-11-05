@@ -9,15 +9,15 @@ from tile import *
 
 
 class Level:
-    def __init__(self, load_level_num: int, spritesheet: str, character: str, gravity: int, game_state_manager: gamestate.GameStateManager):
+    def __init__(self, load_level_num: int, spritesheet: str, character_name: str, gravity: int, game_state_manager: gamestate.GameStateManager):
 
         # assertions
-        assert character in CHAR_LIST, f"{character} not in CHAR_LIST"
+        assert character_name in CHAR_LIST, f"{character_name} not in CHAR_LIST"
 
         self.surface = pygame.display.get_surface()
         self.background_sky = Background()
         self.spritesheet = get_spritesheet(spritesheet, False)
-        self.character = load_character(character)
+        self.character = load_character(character_name)
         self.gravity = gravity
 
         self.game_state_manager = game_state_manager
@@ -166,7 +166,6 @@ class Level:
 
         # death
         if self.player.rect.y > 3000:
-            print('game over')
             self.game_over()
 
     def collide_x(self):
