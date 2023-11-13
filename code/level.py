@@ -19,7 +19,8 @@ class Level:
         self.gravity = gravity
 
         self.game_state_manager = game_state_manager
-        self.playing = True
+        self.playing = True         # for pause / unpause
+        self.running = True         # for ending the level
         self.level_num = level_num
         self.x_shift = 0
         self.y_shift = 0
@@ -120,6 +121,8 @@ class Level:
         self.all.empty()
         self.visibles.empty()
 
+        self.running = False
+
         self.level_num += 1
         if self.level_num >= self.game_state_manager.states['mainmenu'].max_level:
             self.game_state_manager.set_state('cutscene')
@@ -127,11 +130,13 @@ class Level:
             self.game_state_manager.set_state('mainmenu')
 
     def game_over(self):
-        """fin du jeux si on pert"""
+        """end game if die"""
         # reset groups
         self.all.empty()
         self.hidden.empty()
         self.visibles.empty()
+
+        self.running = False
 
         self.game_state_manager.set_state('mainmenu')
 
