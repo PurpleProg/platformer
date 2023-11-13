@@ -1,5 +1,6 @@
 import pygame
 from menus import *
+from cutscene import Cutscene
 from gamestate import GameStateManager
 import time
 from debug import debug
@@ -24,6 +25,7 @@ class Game:
         self.main_menu = Mainmenu(self.game_state_manager)
         self.game_state_manager.states['mainmenu'] = self.main_menu
         self.game_state_manager.states['level'] = Runlevel(self.level_num, self.main_menu.char_num, self.game_state_manager)
+        self.game_state_manager.states['cutscene'] = Cutscene()
 
     def run(self):
         prev_time = time.time()
