@@ -1,5 +1,6 @@
 import pygame
 from menus import *
+from cutscene import Cutscene
 from gamestate import GameStateManager
 import time
 from debug import debug
@@ -18,12 +19,13 @@ class Game:
         icon.fill((0, 0, 0))
         pygame.display.set_icon(icon)
 
+        # defines game states
         self.game_state_manager = GameStateManager()
-
-        self.level_num = settings.level_num
+        self.level_num = 0
         self.main_menu = Mainmenu(self.game_state_manager)
         self.game_state_manager.states['mainmenu'] = self.main_menu
-        self.game_state_manager.states['level'] = Runlevel(self.level_num, self.game_state_manager)
+        self.game_state_manager.states['level'] = Runlevel(self.level_num, self.main_menu.char_num, self.game_state_manager)
+        self.game_state_manager.states['cutscene'] = Cutscene()
 
     def run(self):
         prev_time = time.time()
@@ -32,15 +34,8 @@ class Game:
             dt = time.time() - prev_time
             prev_time = time.time()
 
-            # debugging frame rate
-            try:
-                frame_rate = int(1/dt)
-            except ZeroDivisionError:  # on the first frame dt = 0
-                frame_rate = FPS
-
+            # run current state
             self.game_state_manager.states[self.game_state_manager.get_state()].run(dt)
-
-            debug(frame_rate)
 
             pygame.display.update()
             self.clock.tick(FPS)

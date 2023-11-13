@@ -6,6 +6,7 @@ class GameStateManager:
         self.states = {
             'mainmenu': None,
             'level': None,
+            'cutscene': None
         }
 
     def get_state(self):

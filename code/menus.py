@@ -1,4 +1,6 @@
 import sys
+import typing
+
 import pygame.display
 from pygame.locals import *
 from settings import *
@@ -9,7 +11,7 @@ from gamestate import GameStateManager
 
 
 class Button:
-    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: classmethod):
+    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: typing.Callable):
 
         # assertions
         assert len(pos) == 2, f'expects 2, got {len(pos)}'
@@ -64,10 +66,16 @@ class Mainmenu:
         pygame.display.set_icon(self.icon)
 
         self.game_state_manager = game_state_manager
+        self.score = 0
+        for _, dirs, _ in os.walk(get_full_path('level')):
+            self.max_level = len(dirs)
+            break
 
-        settings.char_face = pygame.image.load(
-            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '\Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+        # character selection image
+        self.char_num = 9               # default 9 is blackninja
+        self.char_face = pygame.image.load(
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[self.char_num] + '\Faceset.png').convert()
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
         # creating buttons
         self.buttons = ButtonsGroup()
@@ -105,51 +113,57 @@ class Mainmenu:
                 else:
                     button.update(BUTTON_COLOR)
 
-            self.screen.fill((0, 0, 0))
+        self.screen.fill((0, 0, 0))
 
-            self.buttons.draw(self.screen)
-            self.screen.blit(settings.char_face, (450, 100))
-            self.screen.blit(render_text(f'level {settings.level_num+1}', 100, (255, 255, 255)), (450, 400))
-            self.screen.blit(render_text(f'{settings.CHAR_LIST[settings.char_num]}', 80, (255, 255, 255)), (450, 330))
-            self.screen.blit(render_text(f'score : {int(settings.score)}', 80, (255, 255, 255)), (450, 20))
+        self.buttons.draw(self.screen)
+        self.screen.blit(self.char_face, (450, 100))
+        self.screen.blit(render_text(f"level {self.game_state_manager.states['level'].level.level_num+1}",
+                                     100, (255, 255, 255)), (450, 400))
+        self.screen.blit(render_text(f"{CHAR_LIST[self.char_num]}", 80, (255, 255, 255)),
+                         (450, 330))
+        self.screen.blit(render_text(f"score : {self.game_state_manager.states['level'].level.player.score}",
+                                     80, (255, 255, 255)), (450, 20))
+        self.screen.blit(render_text(f"max level : {self.max_level+1}", 60,
+                                     (255, 255, 255)), (100, 30))
 
     def play(self):
         """exit the menu and start the game"""
-        self.game_state_manager.states['level'] = Runlevel(settings.level_num, self.game_state_manager)
+        self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num,
+                                                           self.char_num, self.game_state_manager)
         self.game_state_manager.set_state('level')
 
     def replay(self):
         """play the level current level instead of the next one"""
-        if settings.level_num > 0:
-            last_level_num = settings.level_num - 1
-            self.game_state_manager.states['level'] = Runlevel(settings.level_num - 1, self.game_state_manager)
+        if self.game_state_manager.states['level'].level.level_num > 0:
+            self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num - 1,
+                                                               self.char_num, self.game_state_manager)
             self.game_state_manager.set_state('level')
-            settings.level_num = last_level_num
 
     def next_char(self):
         """changing character"""
-        if settings.char_num == len(settings.CHAR_LIST) - 1:
+        if self.char_num == len(settings.CHAR_LIST) - 1:
             pass
         else:
-            settings.char_num += 1
-        settings.char_face = pygame.image.load(
-            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+            self.char_num += 1
+        self.char_face = pygame.image.load(
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[self.char_num] + '/Faceset.png').convert()
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
     def prev_char(self):
         """changing character"""
-        if settings.char_num == 0:
+        if self.char_num == 0:
             pass
         else:
-            settings.char_num -= 1
-        settings.char_face = pygame.image.load(
-            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[settings.char_num] + '/Faceset.png').convert()
-        settings.char_face = pygame.transform.scale(settings.char_face, (200, 200))
+            self.char_num -= 1
+        self.char_face = pygame.image.load(
+            get_full_path('images/NinjaAdventure/Actor/Characters/') + CHAR_LIST[self.char_num] + '/Faceset.png').convert()
+        self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
 
 class Runlevel:
-    def __init__(self, current_level_num: int, game_state_manager: GameStateManager):
-        self.level = Level(current_level_num, 'Assets', settings.CHAR_LIST[settings.char_num], GRAVITY, game_state_manager)
+    def __init__(self, current_level_num: int, char_num: int, game_state_manager: GameStateManager):
+        self.char_num = char_num
+        self.level = Level(current_level_num, 'Assets', settings.CHAR_LIST[self.char_num], GRAVITY, game_state_manager)
         self.screen = pygame.display.get_surface()
 
         self.game_state_manager = game_state_manager

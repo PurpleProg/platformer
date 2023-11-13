@@ -3,3 +3,4 @@ venv/*
 .idea/*
 *.zip
 code/__pycache__/*
+.mypy_cache/*

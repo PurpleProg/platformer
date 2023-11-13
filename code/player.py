@@ -3,7 +3,7 @@ from settings import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple, character: str):
+    def __init__(self, pos: tuple, character: pygame.Surface):
         super().__init__()
 
         # assertions
@@ -20,11 +20,13 @@ class Player(pygame.sprite.Sprite):
         self.speed_x = SPEED
         self.speed_y = SPEED
         self.x_shift_speed = SPEED
-
-        self.counter = 0.0
-        self.animation = 'idle'
-        self.character = character
         self.score = 0
+
+        # animation stuff
+        self.counter = 0.0
+        self.character = character
+        self.anim_state = "idle"
+        self.anim_is_jumping = False
 
     def update(self, dt: float):
         """change la direction du joueur et l'anime"""
@@ -42,22 +44,22 @@ class Player(pygame.sprite.Sprite):
 
     def animate(self, dt: float):
         """change the sprite of the player based on his current state"""
-        # la gestion de l'etat du personnage (si il saute par exemple) est pas tres bien faite.
-        # il faudrait le refaire en utilisant un dictionnaire d'animations que la fonction jump
-        # et les deplacement sur x (dans la fonction get pressed de la class player) puisse modifier
-        if self.direction.x > 0:
-            x = 3
-            y = int(self.counter)
-        elif self.direction.x < 0:
-            x = 2
-            y = int(self.counter)
-        else:
+        # animations on X axis
+        if self.anim_state == "idle":
             x = 0
             y = 0
-        if round(self.vecteur.y) != 0:          # rounded vecteur is == 0 at the top of the jump
+        elif self.anim_state == "right":
+            x = 3
+            y = int(self.counter)
+        elif self.anim_state == 'left':
+            x = 2
+            y = int(self.counter)
+        # jumping animation
+        if self.anim_is_jumping is True:          # rounded vecteur is == 0 at the top of the jump
             y = 5
-        self.counter += dt * AMINATION_SPEED * SPEED
 
+        # couter
+        self.counter += dt * AMINATION_SPEED * SPEED
         if int(self.counter) > 3:
             self.counter = 0
 
@@ -78,15 +80,18 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
     def get_pressed(self):
-        """change the x direction based on key press"""
+        """change the x direction and the animation state based on key press"""
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.anim_state = "right"
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.anim_state = "left"
         else:
             self.direction.x = 0
+            self.anim_state = "idle"
 
         # cheat
         if keys[pygame.K_r]:
@@ -114,7 +119,7 @@ class Player(pygame.sprite.Sprite):
         """move the player on y, call jump on key press and call gravity"""
         keys = pygame.key.get_pressed()
 
-        # saut
+        # jump
         if self.direction.y == 0.0:
             if keys[pygame.K_UP]:
                 self.jump(dt)
@@ -129,8 +134,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = round(self.pos.y)
 
     def jump(self, dt: float):
-        """just jump"""
-        # self.vecteur.y = JUMP * (1/FPS)
+        """set vecteur y to (JUMP * dt) and anim_is_jumping to True"""
+        self.anim_is_jumping = True
         self.vecteur.y = JUMP * dt
 
         self.pos.y += self.vecteur.y
