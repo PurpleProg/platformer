@@ -23,6 +23,7 @@ class Cutscene:
         self.screen.blit(self.background, (0, 0))
         self.scene.update(dt)
 
+
 class Endscene:
     """end game cutscene"""
     def __init__(self):

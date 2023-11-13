@@ -121,7 +121,10 @@ class Level:
         self.visibles.empty()
 
         self.level_num += 1
-        self.game_state_manager.set_state('mainmenu')
+        if self.level_num >= self.game_state_manager.states['mainmenu'].max_level:
+            self.game_state_manager.set_state('cutscene')
+        else:
+            self.game_state_manager.set_state('mainmenu')
 
     def game_over(self):
         """fin du jeux si on pert"""

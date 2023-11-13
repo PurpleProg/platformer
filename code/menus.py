@@ -123,29 +123,22 @@ class Mainmenu:
                              (450, 330))
             self.screen.blit(render_text(f"score : {self.game_state_manager.states['level'].level.player.score}",
                                          80, (255, 255, 255)), (450, 20))
-            self.screen.blit(render_text(f"max : {self.max_level}", 60,
-                                         (255, 255, 255)), (450, 50))
-
+            self.screen.blit(render_text(f"max level : {self.max_level+1}", 60,
+                                         (255, 255, 255)), (100, 30))
+ 
     def play(self):
         """exit the menu and start the game"""
-        if self.game_state_manager.states['level'].level.level_num >= self.max_level:
-            self.game_state_manager.set_state('cutscene')
-        else:
-            self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num,
-                                                               self.char_num, self.game_state_manager)
-            self.game_state_manager.set_state('level')
+        self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num,
+                                                           self.char_num, self.game_state_manager)
+        self.game_state_manager.set_state('level')
 
     def replay(self):
         """play the level current level instead of the next one"""
         if self.game_state_manager.states['level'].level.level_num > 0:
-            if self.game_state_manager.states['level'].level.level_num < self.max_level:
-                last_level_num = self.game_state_manager.states['level'].level.level_num - 1
-                self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num - 1, self.char_num, self.game_state_manager)
-                self.game_state_manager.set_state('level')
-                self.game_state_manager.states['level'].level.level_num = last_level_num
-            else:
-                pass
-                # end screen
+            last_level_num = self.game_state_manager.states['level'].level.level_num - 1
+            self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num - 1, self.char_num, self.game_state_manager)
+            self.game_state_manager.set_state('level')
+            self.game_state_manager.states['level'].level.level_num = last_level_num
 
     def next_char(self):
         """changing character"""
