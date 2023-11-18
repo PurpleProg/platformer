@@ -138,6 +138,8 @@ class Mainmenu:
             self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num - 1,
                                                                self.char_num, self.game_state_manager)
             self.game_state_manager.set_state('level')
+        else:
+            self.play()
 
     def next_char(self):
         """changing character"""
