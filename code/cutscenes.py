@@ -4,26 +4,6 @@ from settings import *
 from fonctions import get_full_path, render_text
 
 
-class Cutscene:
-    def __init__(self):
-        # cutscenes
-        self.scene = Endscene()
-
-        self.screen = pygame.display.get_surface()
-        self.background = (pygame.Surface((WIDTH, HEIGHT)))
-        self.background.fill((255, 255, 255))
-
-    def run(self, dt: float):
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        self.screen.blit(self.background, (0, 0))
-        self.scene.update(dt)
-
-
 class Endscene:
     """end game cutscene"""
     def __init__(self):

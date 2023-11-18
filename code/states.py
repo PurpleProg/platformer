@@ -1,61 +1,14 @@
 import sys
-import typing
 
-import pygame.display
-from pygame.locals import *
+import pygame
 from settings import *
-import settings
-from fonctions import render_text, get_full_path
+from fonctions import render_text, get_full_path, Button, ButtonsGroup
 from level import Level
-from gamestate import GameStateManager
-
-
-class Button:
-    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: typing.Callable):
-
-        # assertions
-        assert len(pos) == 2, f'expects 2, got {len(pos)}'
-        assert len(color) == 3, f'expects 3, got {len(color)}'
-
-        self.commande = commande
-        self.image = pygame.Surface((200, 50))
-        self.rect = self.image.get_rect(topleft=pos)
-        self.image.fill(color)
-        self.image.blit(text,
-                        ((self.rect.w / 2) - (text.get_width() / 2), (self.rect.h / 2) - (text.get_height() / 2)))
-        self.text = text
-
-    def update(self, color):
-        """sert a changer la couleur du bouton"""
-        assert len(color) == 3, f'expects 3, got {len(color)}'
-        self.image.fill(color)
-        self.image.blit(self.text, (
-            (self.rect.w / 2) - (self.text.get_width() / 2), (self.rect.h / 2) - (self.text.get_height() / 2)))
-
-    def clicked(self):
-        self.commande()
-
-
-class ButtonsGroup:
-    def __init__(self):
-        self.buttons = []
-
-    def add(self, button: Button):
-        self.buttons.append(button)
-
-    def update(self, color):
-        """update the color of every button on the group"""
-        assert len(color) == 3, f'expects 3, got {len(color)}'
-        for button in self.buttons:
-            button.update(color)
-
-    def draw(self, surf: pygame.Surface):
-        for button in self.buttons:
-            surf.blit(button.image, button.rect)
+from cutscenes import *
 
 
 class Mainmenu:
-    def __init__(self, game_state_manager: GameStateManager):
+    def __init__(self, game_state_manager):
 
         # configure the windows
         self.screen = pygame.display.get_surface()
@@ -95,20 +48,20 @@ class Mainmenu:
     def run(self, dt: float):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_RIGHT:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
                     self.next_char()
-                elif event.key == K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     self.prev_char()
-                if event.key == K_RETURN:
+                if event.key == pygame.K_RETURN:
                     self.play()
             for button in self.buttons.buttons:
                 if button.rect.collidepoint(mouse):
                     button.update(BUTTON_COLOR_ON_MOUSE_OVER)
-                    if event.type == MOUSEBUTTONDOWN:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
                         button.clicked()
                 else:
                     button.update(BUTTON_COLOR)
@@ -128,14 +81,14 @@ class Mainmenu:
 
     def play(self):
         """exit the menu and start the game"""
-        self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num,
-                                                           self.char_num, self.game_state_manager)
+        self.game_state_manager.states['level'] = Level_state(self.game_state_manager.states['level'].level.level_num,
+                                                              self.char_num, self.game_state_manager)
         self.game_state_manager.set_state('level')
 
     def replay(self):
         """play the level current level instead of the next one"""
         if self.game_state_manager.states['level'].level.level_num > 0:
-            self.game_state_manager.states['level'] = Runlevel(self.game_state_manager.states['level'].level.level_num - 1,
+            self.game_state_manager.states['level'] = Level_state(self.game_state_manager.states['level'].level.level_num - 1,
                                                                self.char_num, self.game_state_manager)
             self.game_state_manager.set_state('level')
         else:
@@ -143,7 +96,7 @@ class Mainmenu:
 
     def next_char(self):
         """changing character"""
-        if self.char_num == len(settings.CHAR_LIST) - 1:
+        if self.char_num == len(CHAR_LIST) - 1:
             pass
         else:
             self.char_num += 1
@@ -162,16 +115,35 @@ class Mainmenu:
         self.char_face = pygame.transform.scale(self.char_face, (200, 200))
 
 
-class Runlevel:
-    def __init__(self, current_level_num: int, char_num: int, game_state_manager: GameStateManager):
-        self.char_num = char_num
-        self.level = Level(current_level_num, 'Assets', settings.CHAR_LIST[self.char_num], GRAVITY, game_state_manager)
+class Cutscene:
+    def __init__(self):
+        # cutscenes
+        self.scene = Endscene()
+
+        self.screen = pygame.display.get_surface()
+        self.background = (pygame.Surface((WIDTH, HEIGHT)))
+        self.background.fill((255, 255, 255))
+
+    def run(self, dt: float):
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        self.screen.blit(self.background, (0, 0))
+        self.scene.update(dt)
+
+
+class Pause:
+    def __init__(self, current_level: Level, game_state_manager):
         self.screen = pygame.display.get_surface()
 
         self.game_state_manager = game_state_manager
+        self.level = current_level
 
         # modifie la fenêtre
-        pygame.display.set_caption('platformer : game')
+        pygame.display.set_caption('platformer : pause')
         self.icon = pygame.Surface((10, 10))
         self.icon.fill((0, 0, 0))
         pygame.display.set_icon(self.icon)
@@ -189,7 +161,8 @@ class Runlevel:
 
     def resume(self):
         """exit pause"""
-        self.level.playing = True
+        self.game_state_manager.set_state('level')
+        # gamestate to level
 
     def quit(self):
         """quit game and go to main menu"""
@@ -198,38 +171,70 @@ class Runlevel:
     def run(self, dt: float):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.resume()
+
+            for button in self.buttons.buttons:
+                # button's command execution
+                if button.rect.collidepoint(mouse):
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        button.clicked()
+
+        for button in self.buttons.buttons:
+            # couleur des boutons a chaque frame
+            if button.rect.collidepoint(mouse):
+                button.update(BUTTON_COLOR_ON_MOUSE_OVER)
+            else:
+                button.update(BUTTON_COLOR)
+
+            # draw pause screen
+            paused_text = render_text('PAUSED', 200, (200, 200, 200))
+            x = (WIDTH/2) - paused_text.get_rect().centerx
+            y = (HEIGHT/2) - paused_text.get_rect().centery
+
+            self.screen.blit(paused_text, (x, y))
+            self.buttons.draw(self.screen)
+
+
+class Level_state:
+    def __init__(self, current_level_num: int, char_num: int, game_state_manager):
+        self.char_num = char_num
+        self.level = Level(current_level_num, 'Assets', CHAR_LIST[self.char_num], GRAVITY, game_state_manager)
+        self.screen = pygame.display.get_surface()
+
+        self.game_state_manager = game_state_manager
+
+        # modifie la fenêtre
+        pygame.display.set_caption('platformer : level')
+        self.icon = pygame.Surface((10, 10))
+        self.icon.fill((0, 0, 0))
+        pygame.display.set_icon(self.icon)
+
+    def run(self, dt: float):
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                # jumps
                 if event.key == pygame.K_SPACE:
+                    # cheat
                     self.level.player.jump(dt)
                 if event.key == pygame.K_UP:
+                    # normal jump call
                     if self.level.player.jumps > 0:
                         self.level.player.jump(dt)
 
                 if event.key == pygame.K_ESCAPE:
-                    self.level.playing = not self.level.playing
-                    surf = (pygame.Surface(pygame.display.get_desktop_sizes()[0]))
-                    surf.set_alpha(200)
-                    pygame.display.get_surface().blit(surf, (0, 0))
-            if self.level.playing is False:      # pause
-                for button in self.buttons.buttons:
-                    if button.rect.collidepoint(mouse):
-                        button.update(BUTTON_COLOR_ON_MOUSE_OVER)
-                        if event.type == MOUSEBUTTONDOWN:
-                            button.clicked()
-                    else:
-                        button.update(BUTTON_COLOR)
-        if self.level.playing:
-            self.level.run(dt)
-            pygame.display.set_caption('platformer : game')
-        else:       # si le niveau est en pause
-            pygame.display.set_caption('platformer : paused')
 
-            # pause screen
-            paused_text = render_text('PAUSED', 200, (200, 200, 200))
-            x = (WIDTH/2) - paused_text.get_rect().centerx
-            y = (HEIGHT/2) - paused_text.get_rect().centery
-            self.screen.blit(paused_text, (x, y))
-            self.buttons.draw(self.screen)
+                    self.level.playing = False
+
+                    self.game_state_manager.set_state('pause')
+
+        self.level.run(dt)

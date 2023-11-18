@@ -1,6 +1,5 @@
 import pygame.display
 from background import Background
-import gamestate
 from fonctions import *
 from player import Player
 from tile import *
@@ -8,7 +7,7 @@ from debug import debug
 
 
 class Level:
-    def __init__(self, level_num: int, spritesheet: str, character_name: str, gravity: int, game_state_manager: gamestate.GameStateManager):
+    def __init__(self, level_num: int, spritesheet: str, character_name: str, gravity: int, game_state_manager):
 
         # assertions
         assert character_name in CHAR_LIST, f"{character_name} not in CHAR_LIST"
@@ -20,7 +19,6 @@ class Level:
         self.gravity = gravity
 
         self.game_state_manager = game_state_manager
-        self.playing = True         # for pause / unpause
         self.running = True         # for ending the level
         self.level_num = level_num
         self.x_shift = 0

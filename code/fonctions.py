@@ -5,6 +5,50 @@ import pygame
 import settings
 
 
+class Button:
+    def __init__(self, pos: tuple, color: tuple, text: pygame.Surface, commande: callable):
+
+        # assertions
+        assert len(pos) == 2, f'expects 2, got {len(pos)}'
+        assert len(color) == 3, f'expects 3, got {len(color)}'
+
+        self.commande = commande
+        self.image = pygame.Surface((200, 50))
+        self.rect = self.image.get_rect(topleft=pos)
+        self.image.fill(color)
+        self.image.blit(text,
+                        ((self.rect.w / 2) - (text.get_width() / 2), (self.rect.h / 2) - (text.get_height() / 2)))
+        self.text = text
+
+    def update(self, color):
+        """sert a changer la couleur du bouton"""
+        assert len(color) == 3, f'expects 3, got {len(color)}'
+        self.image.fill(color)
+        self.image.blit(self.text, (
+            (self.rect.w / 2) - (self.text.get_width() / 2), (self.rect.h / 2) - (self.text.get_height() / 2)))
+
+    def clicked(self):
+        self.commande()
+
+
+class ButtonsGroup:
+    def __init__(self):
+        self.buttons = []
+
+    def add(self, button: Button):
+        self.buttons.append(button)
+
+    def update(self, color):
+        """update the color of every button on the group"""
+        assert len(color) == 3, f'expects 3, got {len(color)}'
+        for button in self.buttons:
+            button.update(color)
+
+    def draw(self, surf: pygame.Surface):
+        for button in self.buttons:
+            surf.blit(button.image, button.rect)
+
+
 def import_csv(path: str):
     """import a csv file from a path
     return a 2d list of IDs of tiles

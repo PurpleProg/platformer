@@ -1,13 +1,20 @@
+from states import *
+
 
 class GameStateManager:
     """manage the different states of the game, like menu or level for exemple"""
     def __init__(self):
         self.current_state = 'mainmenu'
+
         self.states = {
-            'mainmenu': None,
+            'mainmenu': Mainmenu(self),
             'level': None,
-            'cutscene': None
+            'pause': None,
+            'cutscene': Cutscene()
         }
+
+        self.states['level'] = Level_state(0, self.states['mainmenu'].char_num, self)
+        self.states['pause'] = Pause(self.states['level'], self)
 
     def get_state(self):
         """return the current state of the game"""

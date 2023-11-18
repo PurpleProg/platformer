@@ -1,7 +1,6 @@
 import pygame
-from menus import *
-from cutscene import Cutscene
 from gamestate import GameStateManager
+from states import *
 import time
 from debug import debug
 
@@ -21,11 +20,13 @@ class Game:
 
         # defines game states
         self.game_state_manager = GameStateManager()
-        self.level_num = 0
-        self.main_menu = Mainmenu(self.game_state_manager)
-        self.game_state_manager.states['mainmenu'] = self.main_menu
-        self.game_state_manager.states['level'] = Runlevel(self.level_num, self.main_menu.char_num, self.game_state_manager)
+        self.game_state_manager.states['mainmenu'] = Mainmenu(self.game_state_manager)
+        self.game_state_manager.states['level'] = Level_state(0,
+                                                              self.game_state_manager.states['mainmenu'].char_num,
+                                                              self.game_state_manager)
+        self.game_state_manager.states['pause'] = Pause(self.game_state_manager.states['level'], self.game_state_manager)
         self.game_state_manager.states['cutscene'] = Cutscene()
+
 
     def run(self):
         prev_time = time.time()
