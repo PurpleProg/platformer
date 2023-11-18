@@ -161,7 +161,7 @@ class Level:
         # collide with the bridges
         for sprite in self.bridges.sprites():
             if sprite.rect.colliderect(self.player.rect):
-                if self.player.direction.y == 1.0:
+                if self.player.direction.y == 1.0 and self.player.vecteur.y > 0.0:
                     if (self.player.rect.bottom - sprite.rect.top) < TOLERANCE_POND:
                         self.player.rect.bottom = sprite.rect.top
                         self.player.pos.y = sprite.rect.top - TILE_SIZE
