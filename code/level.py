@@ -4,6 +4,7 @@ import gamestate
 from fonctions import *
 from player import Player
 from tile import *
+from debug import debug
 
 
 class Level:
@@ -72,6 +73,8 @@ class Level:
         self.background_sky.update()
         self.update()   # change x_shift et y_shift en fonction de la position de player
         self.player.update(dt)    # change la direction + anime
+
+        debug(self.player.jumps)
 
         # update x
         self.all.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift
@@ -155,6 +158,7 @@ class Level:
                     self.player.rect.bottom = sprite.rect.top
                     self.player.pos.y = sprite.rect.top - TILE_SIZE
                     self.player.anim_is_jumping = False
+                    self.player.jumps = MAX_JUMPS
                     self.player.direction.y = 0
                 self.player.vecteur.y = 0
 

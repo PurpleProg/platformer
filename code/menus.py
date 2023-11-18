@@ -202,6 +202,10 @@ class Runlevel:
             if event.type == KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.level.player.jump(dt)
+                if event.key == pygame.K_UP:
+                    if self.level.player.jumps > 0:
+                        self.level.player.jump(dt)
+
                 if event.key == pygame.K_ESCAPE:
                     self.level.playing = not self.level.playing
                     surf = (pygame.Surface(pygame.display.get_desktop_sizes()[0]))

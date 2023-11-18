@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.speed_y = SPEED
         self.x_shift_speed = SPEED
         self.score = 0
+        self.jumps = MAX_JUMPS
 
         # animation stuff
         self.counter = 0.0
@@ -119,11 +120,6 @@ class Player(pygame.sprite.Sprite):
         """move the player on y, call jump on key press and call gravity"""
         keys = pygame.key.get_pressed()
 
-        # jump
-        if self.direction.y == 0.0:
-            if keys[pygame.K_UP]:
-                self.jump(dt)
-
         self.gravity(gravity, dt)
 
         # replace to avoid super-jump du to tiles shift
@@ -136,6 +132,8 @@ class Player(pygame.sprite.Sprite):
     def jump(self, dt: float):
         """set vecteur y to (JUMP * dt) and anim_is_jumping to True"""
         self.anim_is_jumping = True
+        self.jumps -= 1
+
         self.vecteur.y = JUMP * dt
 
         self.pos.y += self.vecteur.y
