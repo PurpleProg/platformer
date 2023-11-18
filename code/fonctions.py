@@ -100,8 +100,9 @@ def load_character(character: str):
 def level_files_path(num: int):
     """return a list of path for a given level num"""
 
-    # os.listdir only extract a list of files names from the directory
-    list_of_files = os.listdir(get_full_path(f"level/{num}/"))
+    for _, _, files in os.walk(get_full_path(f"level/{num}/")):
+        list_of_files = files
+        break
 
     # add level/{num}/ to every file
     for i, file in enumerate(list_of_files):

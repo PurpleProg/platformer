@@ -20,13 +20,6 @@ class Game:
 
         # defines game states
         self.game_state_manager = GameStateManager()
-        self.game_state_manager.states['mainmenu'] = Mainmenu(self.game_state_manager)
-        self.game_state_manager.states['level'] = Level_state(0,
-                                                              self.game_state_manager.states['mainmenu'].char_num,
-                                                              self.game_state_manager)
-        self.game_state_manager.states['pause'] = Pause(self.game_state_manager.states['level'], self.game_state_manager)
-        self.game_state_manager.states['cutscene'] = Cutscene()
-
 
     def run(self):
         prev_time = time.time()
@@ -36,8 +29,9 @@ class Game:
             prev_time = time.time()
 
             # run current state
-            self.game_state_manager.states[self.game_state_manager.get_state()].run(dt)
+            self.game_state_manager.states[self.game_state_manager.current_state].run(dt)
 
+            debug(self.game_state_manager.states['level'].level.player.jumps)
             pygame.display.update()
             self.clock.tick(FPS)
 

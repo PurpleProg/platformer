@@ -1,5 +1,4 @@
 import sys
-
 import pygame
 from settings import *
 from fonctions import render_text, get_full_path, Button, ButtonsGroup

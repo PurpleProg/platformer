@@ -16,16 +16,9 @@ class GameStateManager:
         self.states['level'] = Level_state(0, self.states['mainmenu'].char_num, self)
         self.states['pause'] = Pause(self.states['level'], self)
 
-    def get_state(self):
-        """return the current state of the game"""
-        # est-ce qu'on pourrait juste faire gamestate.current_state ?
-        # cette fonction ne sert à rien enfaite
-        return self.current_state
-
     def set_state(self, state):
         """change the state of the game"""
 
-        # est-ce qu'on pourrait juste faire gamestate.current_state = new_state ?
-        # cette fonction ne sert à rien enfaite
-        # c'est peut-etre un peut plus clair comme ca
+        # on pourrait juste faire gamestate.current_state = the_new_state
+        # cette fonction ne sert à rien, mais c'est plus comprehensible
         self.current_state = state

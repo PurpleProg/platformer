@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.anim_is_jumping = False
 
     def update(self, dt: float):
-        """change la direction du joueur et l'anime"""
+        """Change la direction du joueur et l'anime"""
 
         # updating the y direction
         if self.vecteur.y > 0:
@@ -117,8 +117,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = round(self.pos.x)
 
     def move_y(self, gravity: int, dt: float, y_shift: int):
-        """move the player on y, call jump on key press and call gravity"""
-        keys = pygame.key.get_pressed()
+        """move the player on y and call gravity"""
 
         self.gravity(gravity, dt)
 

@@ -1,24 +1,26 @@
 import pygame
 from fonctions import get_full_path
+import os
 
 
 class Background:
     """images displayed on the background_sky"""
-    def __init__(self):
+    def __init__(self, level_num: int):
         self.game_display = pygame.display.get_surface()
 
         # creating one surface from multiples background_sky images
-        self.image1 = pygame.image.load(get_full_path('images/Tiles/Assets/Background_2.png')).convert_alpha()
-        self.image1 = pygame.transform.scale(self.image1, pygame.display.get_desktop_sizes()[0])
-        self.rect1 = self.image1.get_rect()
-
-        self.image2 = pygame.image.load(get_full_path('images/Tiles/Assets/Background_1.png')).convert_alpha()
-        self.image2 = pygame.transform.scale(self.image2, pygame.display.get_desktop_sizes()[0])
-        self.rect2 = self.image2.get_rect()
+        for _, _, files in os.walk(get_full_path(f'level/{level_num}/background/')):
+            bg_images = files
+            break
 
         self.surf = pygame.Surface(pygame.display.get_desktop_sizes()[0])
-        self.surf.blit(self.image1, self.rect1)
-        self.surf.blit(self.image2, self.rect2)
+
+        for image in bg_images:
+            image = pygame.image.load(get_full_path(f'level/{level_num}/background/{image}')).convert_alpha()
+            image = pygame.transform.scale(image, pygame.display.get_desktop_sizes()[0])
+            rect = image.get_rect()
+            self.surf.blit(image, rect)
+
         self.rect = self.surf.get_rect()
 
     def update(self):

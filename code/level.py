@@ -13,7 +13,7 @@ class Level:
         assert character_name in CHAR_LIST, f"{character_name} not in CHAR_LIST"
 
         self.surface = pygame.display.get_surface()
-        self.background_sky = Background()
+        self.background_sky = Background(level_num)
         self.spritesheet = get_spritesheet(spritesheet, False)
         self.character = load_character(character_name)
         self.gravity = gravity
@@ -72,27 +72,25 @@ class Level:
         self.update()   # change x_shift et y_shift en fonction de la position de player
         self.player.update(dt)    # change la direction + anime
 
-        debug(self.player.jumps)
-
         # update x
-        self.all.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift
+        self.all.update_x(self.x_shift, self.player.x_shift_speed, dt)     # applique x_chift sur toutes les tuiles
         self.player.move_x(dt)
-        self.collide_x()                # replace sur X si collision
+        self.collide_x()                # replace le joueur sur X si collision
 
         # update y
-        self.all.update_y(self.y_shift, dt)          # applique y_chift
-        self.player.move_y(self.gravity, dt, self.y_shift)    # applique la gravité et le saut
+        self.all.update_y(self.y_shift, dt)          # applique y_chift a toutes les tuiles
+        self.player.move_y(self.gravity, dt, self.y_shift)    # applique la gravité
         self.collide_y()                # replace sur Y si collision
 
         # draw groups
         self.visibles.draw(self.surface)
-        self.collide_hidden()               # draw hidden group only if there is no collision
+        self.collide_hidden()               # draw hidden group only if there is no collision with the player
 
         # items and end flag
         self.collide_misc()
 
     def update(self):
-        """Si le joueur s'approche du bord, immobilise le et bouge les tuiles dans le sens inverse
+        """Si le joueur s'approche du bord, immobilise le et bouge les tuiles dans la direction inverse
         les tuiles ne sont pas deplacees ici,
         seulement une variable shift est modifiee puis sera utilisee par la fonction update des tuiles"""
         if self.player.rect.right > WIDTH-BORDURE and self.player.direction.x > 0:
@@ -116,7 +114,7 @@ class Level:
             self.player.speed_y = SPEED
 
     def game_finish(self):
-        """fin du jeux si on gagne"""
+        """Fin du jeu si on gagne"""
         # reset groups
         self.hidden.empty()
         self.all.empty()
@@ -142,7 +140,7 @@ class Level:
         self.game_state_manager.set_state('mainmenu')
 
     def collide_y(self):
-        """gere toutes les collisions sur l'axe Y (pour les tuiles et les ponds)"""
+        """Gere toutes les collisions sur l'axe Y (pour les tuiles et les ponds)"""
         # collide with tiles
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
@@ -176,7 +174,7 @@ class Level:
             self.game_over()
 
     def collide_x(self):
-        """gere toutes les collisions sur l'axe X"""
+        """Gere toutes les collisions sur l'axe X"""
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(self.player.rect):
                 # left
@@ -189,7 +187,7 @@ class Level:
                     self.player.rect.right = sprite.rect.left
 
     def collide_misc(self):
-        """gere les collisions avec les items"""
+        """Gere les collisions avec les items"""
         # get the points and increment score
         if pygame.sprite.spritecollide(self.player, self.misc, False):
             collided = pygame.sprite.spritecollide(self.player, self.misc, False, pygame.sprite.collide_mask)
