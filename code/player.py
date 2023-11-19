@@ -1,4 +1,6 @@
 import pygame
+
+from debug import debug
 from settings import *
 
 
@@ -121,6 +123,11 @@ class Player(pygame.sprite.Sprite):
 
         self.gravity(gravity, dt)
 
+        # jump tests
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.jump(dt)
+
         # replace to avoid super-jump du to tiles shift
         self.pos.y += y_shift * SPEED * dt
 
@@ -130,10 +137,34 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self, dt: float):
         """set vecteur y to (JUMP * dt) and anim_is_jumping to True"""
-        self.anim_is_jumping = True
-        self.jumps -= 1
 
-        self.vecteur.y = JUMP * dt
+        # self.vecteur.y = JUMP * dt
+
+        #     ^
+        #    / \
+        #     |   Du to delta time inconstancy, sometime the player jump really high or really low.
+        #     |   Maybe the "mario jump" (where you jump higher if you hold up) could fix this issue,
+        #     |   cause here the issue occur because of the height of the jump is defined on one single frame,
+        #     |   which is not the case in a mario-like jump.
+
+        debug(self.vecteur.y, (800, 10))
+
+        if not self.anim_is_jumping:
+            self.anim_is_jumping = True
+            self.start_y_pos = self.pos.y
+            self.jumps -= 1
+            self.mounting = True
+
+        if self.anim_is_jumping and self.pos.y > self.start_y_pos-100:
+            if self.mounting:
+                self.vecteur.y = JUMP/1.5 * dt
+        else:
+            self.mounting = False
+
+        # marche pas bien
+
+        debug(self.vecteur.y, (800, 50))
+
 
         self.pos.y += self.vecteur.y
         self.rect.y = round(self.pos.y)
