@@ -228,7 +228,8 @@ class Level_state:
                 if event.key == pygame.K_UP:
                     # normal jump call
                     if self.level.player.jumps > 0:
-                        self.level.player.jump(dt)
+                        # self.level.player.jump(dt)
+                        pass
 
                 if event.key == pygame.K_ESCAPE:
 
