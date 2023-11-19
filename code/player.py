@@ -161,7 +161,13 @@ class Player(pygame.sprite.Sprite):
         else:
             self.mounting = False
 
+<<<<<<< HEAD
         # marche pas bien
+=======
+        # code de merde, pas comme mario, regle pas le probleme, plus de double saut.
+        # c pire que avant je vais me sucider
+        # je me deteste
+>>>>>>> ac5d240d987740bb56f3fcfaf3abd81555203c67
 
         debug(self.vecteur.y, (800, 50))
 
